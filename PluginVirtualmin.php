@@ -13,8 +13,13 @@ require_once dirname(__FILE__).'/VirtualminApi.php';
  */
 
 Class PluginVirtualmin extends ServerPlugin {
-        public $usesPackageName = true;
-	var $api;
+
+	public $features = array(
+        'packageName' => true,
+        'testConnection' => false,
+        'showNameservers' => true
+    );
+	public $api;
 
 	public function setup ( $args ) {
 		if ( isset($args['server']['variables']['ServerHostName']) &&
