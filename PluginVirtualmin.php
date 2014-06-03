@@ -91,51 +91,51 @@ Class PluginVirtualmin extends ServerPlugin {
 		*/
 
 		$variables = array (
-			/*T*/"Name"/*/T*/ => array (
+			lang("Name") => array (
 				"type"=>"hidden",
 				"description"=>"Used by CE to show plugin - must match how you call the action function names",
 				"value"=>"Virtualmin"
 				),
-			/*T*/"Description"/*/T*/ => array (
+			lang("Description") => array (
 				"type"=>"hidden",
-				"description"=>/*T*/"Description viewable by admin in server settings"/*/T*/,
-				"value"=>/*T*/"Virtualmin control panel integration"/*/T*/
+				"description"=>lang("Description viewable by admin in server settings"),
+				"value"=>lang("Virtualmin control panel integration")
 				),
-			/*T*/"Username"/*/T*/ => array (
+			lang("Username") => array (
 				"type"=>"text",
-				"description"=>/*T*/"Username used to connect to server"/*/T*/,
+				"description"=>lang("Username used to connect to server"),
 				"value"=>"",
 				"encryptable"=>true
 				),
-			/*T*/"Password"/*/T*/ => array (
+			lang("Password") => array (
 				"type"=>"text",
-				"description"=>/*T*/"Password used to connect to server"/*/T*/,
+				"description"=>lang("Password used to connect to server"),
 				"value"=>"",
 				"encryptable"=>true
 				),
-			/*T*/"Use SSL"/*/T*/ => array (
+			lang("Use SSL") => array (
 				"type"=>"yesno",
-				"description"=>/*T*/"Set NO if you do not have SSL Support"/*/T*/,
+				"description"=>lang("Set NO if you do not have SSL Support"),
 				"value"=>"1"
 				),
-			/*T*/"Failure E-mail"/*/T*/ => array (
+			lang("Failure E-mail") => array (
 				"type"=>"text",
-				"description"=>/*T*/"E-mail address Virualmin error messages will be sent to"/*/T*/,
+				"description"=>lang("E-mail address Virualmin error messages will be sent to"),
 				"value"=>""
 				),
-			/*T*/"Actions"/*/T*/ => array (
+			lang("Actions") => array (
 				"type"=>"hidden",
-				"description"=>/*T*/"Current actions that are active for this plugin per server"/*/T*/,
+				"description"=>lang("Current actions that are active for this plugin per server"),
 				"value"=>"Create,Delete,Suspend,UnSuspend"
 				),
-			/*T*/"reseller"/*/T*/ => array (
+			lang("reseller") => array (
 				"type"=>"hidden",
-				"description"=>/*T*/"Whether this server plugin can set reseller accounts"/*/T*/,
+				"description"=>lang("Whether this server plugin can set reseller accounts"),
 				"value"=>"0",
 				),
-			/*T*/"package_addons"/*/T*/ => array (
+			lang("package_addons") => array (
 				"type"=>"hidden",
-				"description"=>/*T*/"Supported signup addons variables"/*/T*/,
+				"description"=>lang("Supported signup addons variables"),
 				"value"=>"",
 				),
 		);
