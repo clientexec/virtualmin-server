@@ -61,14 +61,14 @@ class VirtualminApi {
 
         if ($data == false) {
             $error = "Virtualmin API Request / cURL Error: " . curl_error($ch);
-            CE_Lib::log($error);
+            CE_Lib::log(4, $error);
         }
 
         $result = $this->result = json_decode($data);
 
         $this->request = array('url' => $this->url, 'function' => $function, 'params' => $params, 'raw' => $data, 'json' => $result);
 
-        CE_Lib::log('Virtualmin: ' . print_r($this->request, true));
+        CE_Lib::log(4, 'Virtualmin: ' . print_r($this->request, true));
 
         if (!is_object($result)) {
             CE_Lib::log(1, "Virtualmin call method: Invalid JSON please check your connection");
