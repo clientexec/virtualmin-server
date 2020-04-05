@@ -446,6 +446,26 @@ Class PluginVirtualmin extends ServerPlugin {
 			$errors[] = $this->email_error('Creation', $error, $args);
 		}
 
+		if ($args['package']['username'] == '') {
+			$error = 'No username was provided';
+			$errors[] = $this->email_error('Creation', $error, $args);
+		}
+
+		if ($args['package']['password'] == '') {
+			$error = 'No password was provided';
+			$errors[] = $this->email_error('Creation', $error, $args);
+		}
+
+		if ($args['package']['domain_name'] == '') {
+			$error = 'No domain name was provided';
+			$errors[] = $this->email_error('Creation', $error, $args);
+		}
+
+		if (count($errors) > 0) {
+			CE_Lib::log(4, "plugin_virtualmin::create::error: ".print_r($errors,true));
+			throw new CE_Exception ( $errors[0] );
+		}
+
 		// Params array we pass to Virtualmin
 		$params = array();
 
@@ -477,4 +497,3 @@ Class PluginVirtualmin extends ServerPlugin {
 		}
 	}
  }
-?>
