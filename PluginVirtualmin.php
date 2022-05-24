@@ -2,7 +2,7 @@
 
 require_once 'library/CE/NE_MailGateway.php';
 require_once 'modules/admin/models/ServerPlugin.php';
-require_once dirname(__FILE__).'/VirtualminApi.php';
+require_once dirname(__FILE__) . '/VirtualminApi.php';
 
 /**
  * Virtualmin Plugin for ClientExec
@@ -25,10 +25,7 @@ class PluginVirtualmin extends ServerPlugin
 
     public function setup($args)
     {
-        if (isset($args['server']['variables']['ServerHostName']) &&
-            isset($args['server']['variables']['plugin_virtualmin_Username']) &&
-            isset($args['server']['variables']['plugin_virtualmin_Password']) &&
-            isset($args['server']['variables']['plugin_virtualmin_Use_SSL'])) {
+        if (isset($args['server']['variables']['ServerHostName']) && isset($args['server']['variables']['plugin_virtualmin_Username']) &&   isset($args['server']['variables']['plugin_virtualmin_Password']) && isset($args['server']['variables']['plugin_virtualmin_Use_SSL'])) {
                 $this->api = new VirtualminApi(
                     $args['server']['variables']['ServerHostName'],
                     $args['server']['variables']['plugin_virtualmin_Username'],
@@ -46,7 +43,7 @@ class PluginVirtualmin extends ServerPlugin
      * @param <type> $args
      * @return boolean
      */
-    function CheckVirtualminPlan($plan)
+    public function checkVirtualminPlan($plan)
     {
         $packages = $this->api->packages();
         foreach ($packages as $p) {
@@ -65,16 +62,16 @@ class PluginVirtualmin extends ServerPlugin
     * @param Array $args
     * @return string
     */
-    function email_error($name, $message, $args)
+    public function emailError($name, $message, $args)
     {
-        $error = "Virtualmin Account " .$name." Failed. ";
-        $error .= "An email with the Details was sent to ". $args['server']['variables']['plugin_virtualmin_Failure_E-mail'].'<br /><br />';
+        $error = "Virtualmin Account " . $name . " Failed. ";
+        $error .= "An email with the Details was sent to " . $args['server']['variables']['plugin_virtualmin_Failure_E-mail'] . '<br /><br />';
 
         if (is_array($message)) {
             $message = implode("\n", trim($message));
         }
 
-        CE_Lib::log(1, 'Virtualmin Error: '.print_r(array('type' => $name, 'error' => $error, 'message' => $message, 'params' => $args), true));
+        CE_Lib::log(1, 'Virtualmin Error: ' . print_r(array('type' => $name, 'error' => $error, 'message' => $message, 'params' => $args), true));
 
         if (!empty($args['server']['variables']['plugin_virtualmin_Failure_E-mail'])) {
             $mailGateway = new NE_MailGateway();
@@ -84,14 +81,14 @@ class PluginVirtualmin extends ServerPlugin
                 "Virtualmin Plugin",
                 $args['server']['variables']['plugin_virtualmin_Failure_E-mail'],
                 "",
-                "Virtualmin Account ".$name." Failure"
+                "Virtualmin Account " . $name . " Failure"
             );
         }
 
-        return $error.nl2br($message);
+        return $error . nl2br($message);
     }
 
-    function getVariables()
+    public function getVariables()
     {
         /* Specification
             itemkey     - used to identify variable in your own functions
@@ -102,58 +99,58 @@ class PluginVirtualmin extends ServerPlugin
 
         $variables = array (
             lang("Name") => array (
-                "type"=>"hidden",
-                "description"=>"Used by CE to show plugin - must match how you call the action function names",
-                "value"=>"Virtualmin"
+                "type" => "hidden",
+                "description" => "Used by CE to show plugin - must match how you call the action function names",
+                "value" => "Virtualmin"
                 ),
             lang("Description") => array (
-                "type"=>"hidden",
-                "description"=>lang("Description viewable by admin in server settings"),
-                "value"=>lang("Virtualmin control panel integration")
+                "type" => "hidden",
+                "description" => lang("Description viewable by admin in server settings"),
+                "value" => lang("Virtualmin control panel integration")
                 ),
             lang("Username") => array (
-                "type"=>"text",
-                "description"=>lang("Username used to connect to server"),
-                "value"=>"",
-                "encryptable"=>true
+                "type" => "text",
+                "description" => lang("Username used to connect to server"),
+                "value" => "",
+                "encryptable" => true
                 ),
             lang("Password") => array (
-                "type"=>"text",
-                "description"=>lang("Password used to connect to server"),
-                "value"=>"",
-                "encryptable"=>true
+                "type" => "text",
+                "description" => lang("Password used to connect to server"),
+                "value" => "",
+                "encryptable" => true
                 ),
             lang("Use SSL") => array (
-                "type"=>"yesno",
-                "description"=>lang("Set NO if you do not have SSL Support"),
-                "value"=>"1"
+                "type" => "yesno",
+                "description" => lang("Set NO if you do not have SSL Support"),
+                "value" => "1"
                 ),
             lang("Failure E-mail") => array (
-                "type"=>"text",
-                "description"=>lang("E-mail address Virualmin error messages will be sent to"),
-                "value"=>""
+                "type" => "text",
+                "description" => lang("E-mail address Virualmin error messages will be sent to"),
+                "value" => ""
                 ),
             lang("Actions") => array (
-                "type"=>"hidden",
-                "description"=>lang("Current actions that are active for this plugin per server"),
-                "value"=>"Create,Delete,Suspend,UnSuspend"
+                "type" => "hidden",
+                "description" => lang("Current actions that are active for this plugin per server"),
+                "value" => "Create,Delete,Suspend,UnSuspend"
                 ),
             lang("reseller") => array (
-                "type"=>"hidden",
-                "description"=>lang("Whether this server plugin can set reseller accounts"),
-                "value"=>"0",
+                "type" => "hidden",
+                "description" => lang("Whether this server plugin can set reseller accounts"),
+                "value" => "0",
                 ),
             lang("package_addons") => array (
-                "type"=>"hidden",
-                "description"=>lang("Supported signup addons variables"),
-                "value"=>"",
+                "type" => "hidden",
+                "description" => lang("Supported signup addons variables"),
+                "value" => "",
                 ),
         );
 
         return $variables;
     }
 
-    function validateCredentials($args)
+    public function validateCredentials($args)
     {
         $errors = array();
 
@@ -195,7 +192,7 @@ class PluginVirtualmin extends ServerPlugin
 
         // Only process requests if no errors occurred
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::validate::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::validate::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         } else {
             // If username and password is valid, username
@@ -203,42 +200,42 @@ class PluginVirtualmin extends ServerPlugin
         }
     }
 
-    function doDelete($args)
+    public function doDelete($args)
     {
         $userPackage = new UserPackage($args['userPackageId']);
         $this->delete($this->buildParams($userPackage));
         return $userPackage->getCustomField("Domain Name") . ' has been deleted.';
     }
 
-    function doCreate($args)
+    public function doCreate($args)
     {
         $userPackage = new UserPackage($args['userPackageId']);
         $args = $this->create($this->buildParams($userPackage));
-        return $userPackage->getCustomField("Domain Name"). ' has been created.';
+        return $userPackage->getCustomField("Domain Name") . ' has been created.';
     }
 
-    function doSuspend($args)
+    public function doSuspend($args)
     {
         $userPackage = new UserPackage($args['userPackageId']);
         $this->suspend($this->buildParams($userPackage));
         return $userPackage->getCustomField("Domain Name") . ' has been suspended.';
     }
 
-    function doUnSuspend($args)
+    public function doUnSuspend($args)
     {
         $userPackage = new UserPackage($args['userPackageId']);
         $this->unsuspend($this->buildParams($userPackage));
         return $userPackage->getCustomField("Domain Name") . ' has been unsuspended.';
     }
 
-    function doUpdate($args)
+    public function doUpdate($args)
     {
         $userPackage = new UserPackage($args['userPackageId']);
         $this->update($this->buildParams($userPackage, $args));
         return $userPackage->getCustomField("Domain Name") . ' has been updated.';
     }
 
-    function update($args)
+    public function update($args)
     {
         $this->setup($args);
         $userPackage = new UserPackage($args['package']['id']);
@@ -259,7 +256,7 @@ class PluginVirtualmin extends ServerPlugin
                     $result = $this->api->call('modify-domain', $params);
 
                     if ($result->status != "success") {
-                        $errors[] = $this->email_error("Username Change", $result->full_error, $args);
+                        $errors[] = $this->emailError("Username Change", $result->full_error, $args);
                     }
 
                     // Internal fix, in case we are also changing the domain name.
@@ -277,7 +274,7 @@ class PluginVirtualmin extends ServerPlugin
                     $result = $this->api->call('modify-domain', $params);
 
                     if ($result->status != "success") {
-                        $errors[] = $this->email_error("Password Change", $result->full_error, $args);
+                        $errors[] = $this->emailError("Password Change", $result->full_error, $args);
                     }
                     break;
 
@@ -297,7 +294,7 @@ class PluginVirtualmin extends ServerPlugin
                     $result = $this->api->call('modify-domain', $params);
 
                     if ($result->status != "success") {
-                        $errors[] = $this->email_error("IP Change", $result->full_error, $args);
+                        $errors[] = $this->emailError("IP Change", $result->full_error, $args);
                     }
                     break;
 
@@ -312,7 +309,7 @@ class PluginVirtualmin extends ServerPlugin
                     $result = $this->api->call('modify-domain', $params);
 
                     if ($result->status != "success") {
-                        $errors[] = $this->email_error("Domain Change", $result->full_error, $args);
+                        $errors[] = $this->emailError("Domain Change", $result->full_error, $args);
                     }
 
                     // Ensure data consistency
@@ -330,21 +327,21 @@ class PluginVirtualmin extends ServerPlugin
                     $result = $this->api->call('modify-domain', $params);
 
                     if ($result->status != "success") {
-                        $errors[] = $this->email_error("Plan Change", $result->full_error, $args);
+                        $errors[] = $this->emailError("Plan Change", $result->full_error, $args);
                     }
                     break;
             }
         }
 
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::update::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::update::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         } else {
             return;
         }
     }
 
-    function unsuspend($args)
+    public function unsuspend($args)
     {
         $this->setup($args);
         $args = $this->updateArgs($args);
@@ -355,18 +352,18 @@ class PluginVirtualmin extends ServerPlugin
         $request = $this->api->call("enable-domain", $params);
 
         if ($request->status != "success") {
-            $errors[] = $this->email_error("Unsuspension", $requset->full_error, $args);
+            $errors[] = $this->emailError("Unsuspension", $requset->full_error, $args);
         } elseif ($request->status == "success") {
             return;
         }
 
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::unsuspend::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::unsuspend::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         }
     }
 
-    function suspend($args)
+    public function suspend($args)
     {
         $this->setup($args);
         $args = $this->updateArgs($args);
@@ -377,18 +374,18 @@ class PluginVirtualmin extends ServerPlugin
         $request = $this->api->call("disable-domain", $params);
 
         if ($request->status != "success") {
-            $errors[] = $this->email_error("Suspension", $request->full_error, $args);
+            $errors[] = $this->emailError("Suspension", $request->full_error, $args);
         } elseif ($request->status == "success") {
             return;
         }
 
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::suspend::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::suspend::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         }
     }
 
-    function delete($args)
+    public function delete($args)
     {
         $this->setup($args);
         $args = $this->updateArgs($args);
@@ -399,30 +396,37 @@ class PluginVirtualmin extends ServerPlugin
         $request = $this->api->call('delete-domain', $params);
 
         if ($request->status != "success") {
-            $errors[] = $this->email_error("Deletion", $request->full_error, $args);
+            $errors[] = $this->emailError("Deletion", $request->full_error, $args);
         } elseif ($request->status == "success") {
             return;
         }
 
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::delete::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::delete::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         }
     }
 
     private function updateArgs($args)
     {
+        $userPackage = new UserPackage($args['package']['id']);
+
         $args['package']['username'] = trim(strtolower($args['package']['username']));
         $args['package']['domain_name'] = trim(strtolower($args['package']['domain_name']));
 
+        // we need to store the username and password in lowercase, so it's properly sent in welcome emails
+        $userPackage->setCustomField('User Name', $args['package']['username']);
+        $userPackage->setCustomField('Domain Name', $args['package']['domain_name']);
+
         if (isset($args['changes']['username'])) {
             $args['changes']['username'] = trim(strtolower($args['changes']['username']));
+            $userPackage->setCustomField('User Name', $args['changes']['username']);
         }
 
         return $args;
     }
 
-    function getAvailableActions($userPackage)
+    public function getAvailableActions($userPackage)
     {
         $args = $this->buildParams($userPackage);
         $args = $this->updateArgs($args);
@@ -447,7 +451,7 @@ class PluginVirtualmin extends ServerPlugin
         return $actions;
     }
 
-    function create($args)
+    public function create($args)
     {
 
         $this->setup($args);
@@ -458,28 +462,28 @@ class PluginVirtualmin extends ServerPlugin
 
 
         // Check if plan exists.
-        if (!$this->CheckVirtualminPlan($args['package']['name_on_server'])) {
+        if (!$this->checkVirtualminPlan($args['package']['name_on_server'])) {
             $error = "The package '{$args['package']['name_on_server']}' was not found on the server.";
-            $errors[] = $this->email_error('Creation', $error, $args);
+            $errors[] = $this->emailError('Creation', $error, $args);
         }
 
         if ($args['package']['username'] == '') {
             $error = 'No username was provided';
-            $errors[] = $this->email_error('Creation', $error, $args);
+            $errors[] = $this->emailError('Creation', $error, $args);
         }
 
         if ($args['package']['password'] == '') {
             $error = 'No password was provided';
-            $errors[] = $this->email_error('Creation', $error, $args);
+            $errors[] = $this->emailError('Creation', $error, $args);
         }
 
         if ($args['package']['domain_name'] == '') {
             $error = 'No domain name was provided';
-            $errors[] = $this->email_error('Creation', $error, $args);
+            $errors[] = $this->emailError('Creation', $error, $args);
         }
 
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::create::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::create::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         }
 
@@ -502,13 +506,13 @@ class PluginVirtualmin extends ServerPlugin
         $request = $this->api->call('create-domain', $params);
 
         if ($request->status != "success") {
-            $errors[] = $this->email_error('Creation', $request->full_error, $args);
+            $errors[] = $this->emailError('Creation', $request->full_error, $args);
         } elseif ($request->status == "success") {
             return;
         }
 
         if (count($errors) > 0) {
-            CE_Lib::log(4, "plugin_virtualmin::create::error: ".print_r($errors, true));
+            CE_Lib::log(4, "plugin_virtualmin::create::error: " . print_r($errors, true));
             throw new CE_Exception($errors[0]);
         }
     }
