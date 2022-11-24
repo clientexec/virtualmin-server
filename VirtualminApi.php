@@ -84,7 +84,7 @@ class VirtualminApi {
      * @param array $params Key => Value array of parameters to send as the request.
      * @return string Properly built http query string
      */
-    private function buildQS($params = array(), $function) {
+    private function buildQS($params, $function) {
         if (count($params) == 0) {
             return 'multiline=';
         }
