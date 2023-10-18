@@ -7,17 +7,17 @@
  * @email kingrst@gmail.com
  * @version July.23.2011
  */
-class VirtualminApi {
-
+class VirtualminApi
+{
     protected $host;
     protected $username;
     protected $hash;
     protected $ssh = false;
-    var $port;
-    var $schema;
-    var $type = 'json';
-    var $result;
-    var $url;
+    public $port;
+    public $schema;
+    public $type = 'json';
+    public $result;
+    public $url;
 
     /**
      * Begin
@@ -27,10 +27,11 @@ class VirtualminApi {
      * @param boolean $ssl Use an SSL connection
      * @param string $type Output type
      */
-    public function __construct($host, $username, $hash, $ssl = false, $type = 'json') {
+    public function __construct($host, $username, $hash, $ssl = false, $type = 'json')
+    {
         $this->host = $host;
         $this->username = $username;
-        $this->hash = $hash;
+        $this->hash = urlencode($hash);
         $this->ssl = $ssl;
         $this->port = 10000;
         $this->schema = ( $ssl == true ) ? 'https://' : 'http://';
@@ -43,7 +44,8 @@ class VirtualminApi {
      * @param array $params
      * @return Boolean
      */
-    public function call($function, $params = array()) {
+    public function call($function, $params = array())
+    {
         if (!function_exists('curl_init')) {
             throw new Exception('cURL is required in order to connect to Virtualmin');
         }
@@ -84,7 +86,8 @@ class VirtualminApi {
      * @param array $params Key => Value array of parameters to send as the request.
      * @return string Properly built http query string
      */
-    private function buildQS($params, $function) {
+    private function buildQS($params, $function)
+    {
         if (count($params) == 0) {
             return 'multiline=';
         }
@@ -105,7 +108,8 @@ class VirtualminApi {
      * Gets all packages available to the Virtualmin user.
      * @return Array of packages (key = package name, index = package array)
      */
-    public function packages() {
+    public function packages()
+    {
         $result = $this->call('list-plans');
         $packages = array();
 
@@ -119,5 +123,4 @@ class VirtualminApi {
             return $packages;
         }
     }
-
 }

@@ -14,7 +14,6 @@ require_once dirname(__FILE__) . '/VirtualminApi.php';
 
 class PluginVirtualmin extends ServerPlugin
 {
-
     public $features = array(
         'packageName' => true,
         'testConnection' => false,
@@ -491,7 +490,7 @@ class PluginVirtualmin extends ServerPlugin
         $params = array();
 
         $params['user'] = $args['package']['username'];
-        $params['pass'] = $args['package']['password'];
+        $params['pass'] = urlencode($args['package']['password']);
         $params['domain'] = $args['package']['domain_name'];
         $params['plan'] = urlencode($args['package']['name_on_server']);
         $params['email'] = $args['customer']['email'];
